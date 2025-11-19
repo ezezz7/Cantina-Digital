@@ -108,7 +108,7 @@ export default Login;
 // ----------- estilos ----------- //
 
 const Form = styled.form`
-  max-width: 350px;
+  max-width: 370px;
   margin-top: 16px;
   width: 100%;
 `;

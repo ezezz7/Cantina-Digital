@@ -413,8 +413,20 @@ const FormRow = styled.form`
     font-size: 14px;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr 1fr auto;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr auto;
+  }
+
+  @media (max-width: 480px) {
     grid-template-columns: 1fr;
+
+    input {
+      width: 100%;
+    }
   }
 `;
 
@@ -508,10 +520,62 @@ const OrderHeader = styled.div`
 `;
 
 const StatusSelect = styled.select`
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid ${({ theme }) => theme.colors.borderLight};
-  font-size: 13px;
+  padding: 8px 12px;
+  padding-right: 38px;
+  border-radius: 8px;
+  border: 1.5px solid ${({ theme }) => theme.colors.primaryBlue};
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23185fa3' d='M6 9L1 4h10z'/%3E%3C/svg%3E") no-repeat;
+  background-position: calc(100% - 8px) center;
+  background-size: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.darkBlue};
+  cursor: pointer;
+  appearance: none;
+  min-width: 140px;
+  
+  transition: 
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryBlue}08;
+    border-color: ${({ theme }) => theme.colors.darkBlue};
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primaryBlue};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primaryBlue}22;
+  }
+
+  option {
+    background: #fff;
+    color: ${({ theme }) => theme.colors.darkBlue};
+    padding: 8px;
+    font-weight: 500;
+  }
+
+  option:checked {
+    background: ${({ theme }) => theme.colors.primaryBlue};
+    color: #fff;
+  }
+
+  @media (max-width: 600px) {
+    min-width: auto;
+    width: 50px;
+    padding: 8px 6px;
+    padding-right: 28px;
+    font-size: 0;
+  }
+
+  @media (max-width: 600px) {
+    option {
+      font-size: 14px;
+    }
+  }
 `;
 
 const ItemsList = styled.ul`

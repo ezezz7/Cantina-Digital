@@ -23,14 +23,17 @@ const Container = styled.div`
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px;
-  
+
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 40px;
-  position: relative; 
-`;
+  justify-content: space-between;
+  gap: 20px;
 
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 6px;
+  }
+`;
 const LogoPensar = styled.img`
   height: 90px;
   opacity: 1;
@@ -39,10 +42,7 @@ const LogoPensar = styled.img`
 const DevText = styled.p`
   color: white;
   font-size: 14px;
-  opacity: 1;
   margin: 0;
-  position: absolute; 
-  right: 24px;
-  top: 50%; 
-  transform: translateY(-50%); 
+  opacity: 1;
+  white-space: nowrap;
 `;

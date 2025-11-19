@@ -157,14 +157,14 @@ const OrderStatus = styled.span`
     }
     if (status === "PREPARING") {
       return `
-        background: rgba(76, 175, 80, 0.12);
-        color: #2e7d32;
+        background: rgba(25, 118, 210, 0.12);
+        color: ${theme.colors.primaryBlue};
       `;
     }
     if (status === "READY") {
       return `
-        background: rgba(25, 118, 210, 0.12);
-        color: ${theme.colors.primaryBlue};
+        background: rgba(76, 175, 80, 0.12);
+        color: #2e7d32;
       `;
     }
     return `
