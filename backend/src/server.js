@@ -30,7 +30,7 @@ app.get('/health', (req, res) => {
 });
 
 
-//   -------------- ROTAS DE AUTENTICAÇÃO -----------------
+// |||||||| ROTAS DE AUTENTICAÇÃO |||||||| //
 
 
 // POST /auth/register
@@ -58,7 +58,7 @@ app.post('/auth/register', async (req, res) => {
     // hasheando
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // criando usuário com 20 reais iniciais só por praticidade
+    // 20 reais iniciais só por praticidade
     const INITIAL_BALANCE = 20; 
     const user = await prisma.user.create({
       data: {
@@ -108,7 +108,7 @@ app.post('/auth/login', async (req, res) => {
       });
     }
 
-    // Comparando a senha enviada com o hash salvo
+    // comparando a senha enviada com o hash salvo
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -117,7 +117,7 @@ app.post('/auth/login', async (req, res) => {
       });
     }
 
-    // Gerando o token 
+    // gerando o token 
     const token = jwt.sign(
       {
         userId: user.id,
@@ -147,7 +147,7 @@ app.post('/auth/login', async (req, res) => {
 });
 
 
-// --------------  ROTA PROTEGIDA DE TESTE -----------
+// |||||||||  ROTA PROTEGIDA DE TESTE ||||||||| //
 
 
 // GET /me
@@ -181,7 +181,7 @@ app.get('/me', authMiddleware, async (req, res) => {
 
 
 
-//   -------------- PARTE PRA INICIAR SERVIDOR -----------------
+//   ||||||||| PARTE PRA INICIAR SERVIDOR |||||||||||  // 
 
 
 const PORT = 3333;

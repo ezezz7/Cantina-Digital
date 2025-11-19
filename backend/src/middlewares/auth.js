@@ -24,13 +24,13 @@ function authMiddleware(req, res, next) {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Salvando os dados do usuário na requisição
+    // salvando os dados do usuário na requisição
     req.user = {
       id: decoded.userId,
       role: decoded.role,
     };
 
-    // Continua para a próxima função / rota
+    // continua para a próxima função 
     return next();
   } catch (error) {
     console.error('Erro no middleware de auth:', error);
