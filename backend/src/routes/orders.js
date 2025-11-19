@@ -14,7 +14,7 @@ router.post('/', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'Items é obrigatório e tem que ser um array com pelo menos um item.' });
     }
 
-    // Validando
+    // validando
     const productIds = items.map(i => i.productId);
     const products = await prisma.product.findMany({
       where: { id: { in: productIds } }
@@ -24,7 +24,6 @@ router.post('/', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'Algum productId não existe.' });
     }
 
-    // Calcular total
     let total = 0;
 
     const orderItemsData = items.map(item => {
@@ -127,7 +126,7 @@ router.get('/', authMiddleware, async (req, res) => {
     return res.status(500).json({ error: 'Erro interno no servidor' });
   }
 });
-// PATCH /orders/:id/status - atualizar status do pedido (pro ADMIN)
+// PATCH /orders/:id/status - atualizar status do pedido (adm)
 router.patch('/:id/status', authMiddleware, adminOnly, async (req, res) => {
   try {
     const { id } = req.params;
@@ -160,7 +159,7 @@ router.patch('/:id/status', authMiddleware, adminOnly, async (req, res) => {
 });
 
 
-// GET /orders/all - todos os pedidos (ADMIN)
+// GET /orders/all - todos os pedidos (adm!)
 router.get('/all', authMiddleware, adminOnly, async (req, res) => {
   try {
     const orders = await prisma.order.findMany({

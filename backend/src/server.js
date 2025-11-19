@@ -34,19 +34,17 @@ app.get('/health', (req, res) => {
 
 
 // POST /auth/register
-// Cadastra um novo usuário
+// cadastro
 app.post('/auth/register', async (req, res) => {
   try {
     const { name, email, password, studentId } = req.body;
 
-    // Validações básicas
+    // validações básicas
     if (!name || !email || !password) {
       return res.status(400).json({
         error: 'Nome, email e senha são obrigatórios',
       });
     }
-
-    // Verifica se já existe usuário com esse email
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -57,20 +55,22 @@ app.post('/auth/register', async (req, res) => {
       });
     }
 
-    // Gera o hash da senha
+    // hasheando
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Criando usuário
+    // criando usuário com 20 reais iniciais só por praticidade
+    const INITIAL_BALANCE = 20; 
     const user = await prisma.user.create({
       data: {
         name,
         email,
         password: hashedPassword,
         studentId: studentId || null,
+        balance: INITIAL_BALANCE,
       },
-    });
+});
 
-    // Nunca devolvendo senha nem hash
+    // nunca devolvendo senha nem hash
     return res.status(201).json({
       id: user.id,
       name: user.name,
@@ -85,19 +85,19 @@ app.post('/auth/register', async (req, res) => {
   }
 });
 
-// Faz login e devolve um JWT
+// faz login e devolve um JWT
 app.post('/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validação básica
+    // só uma validação básica 
     if (!email || !password) {
       return res.status(400).json({
         error: 'Email e senha são obrigatórios',
       });
     }
 
-    // Procura o usuário pelo email
+    // procurando  o usuário pelo email
     const user = await prisma.user.findUnique({
       where: { email },
     });

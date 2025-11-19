@@ -5,10 +5,35 @@ const adminOnly = require('../middlewares/isAdmin');
 
 const router = express.Router();
 
+// GET /users - listar todos os usuários (só pro adm)
+router.get('/', authMiddleware, adminOnly, async (req, res) => {
+  try {
+    const users = await prisma.user.findMany({
+      orderBy: { name: 'asc' },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        studentId: true,
+        role: true,
+        balance: true,
+        createdAt: true,
+      },
+    });
+
+    return res.json(users);
+  } catch (error) {
+    console.error('Erro em GET /users:', error);
+    return res.status(500).json({ error: 'Erro interno no servidor' });
+  }
+});
+
+// PATCH /users/:id/credit - rota pra o adm adicionar crédito
 router.patch('/:id/credit', authMiddleware, adminOnly, async (req, res) => {
   try {
     const { id } = req.params;
-    const { amount } = req.body; 
+    const { amount } = req.body; // quanto quer creditar
+
     const numericAmount = Number(amount);
 
     if (!amount || Number.isNaN(numericAmount) || numericAmount <= 0) {
