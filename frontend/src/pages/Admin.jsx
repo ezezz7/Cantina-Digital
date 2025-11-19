@@ -4,28 +4,61 @@ import axios from "axios";
 
 import Container from "../components/Container";
 import PageTitle from "../components/PageTitle";
+import { useAuth } from "../contexts/AuthContext";
 
 function Admin() {
+  const { token, user } = useAuth();
+
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+
+  const [users, setUsers] = useState([]);       
+  const [creditValues, setCreditValues] = useState({});   // esses 2 aqui são pro crédito
+
+  // só se por algum motivo alguém tentar acessar admin sem ser adm
+  if (!user || user.role !== "admin") {
+    return (
+      <Container>
+        <PageTitle>Painel do Admin</PageTitle>
+        <p>Você não tem permissão para acessar esta página.</p>
+      </Container>
+    );
+  }
 
   async function loadProducts() {
-    const response = await axios.get("http://localhost:3333/products");
-    setProducts(response.data);
+    try {
+      const response = await axios.get("http://localhost:3333/products");
+      setProducts(response.data);
+    } catch (err) {
+      console.error("Erro ao carregar produtos:", err);
+      alert("Erro ao carregar produtos.");
+    }
   }
 
   async function loadOrders() {
-    const response = await axios.get("http://localhost:3333/orders/all");
-    setOrders(response.data);
+    try {
+      const response = await axios.get("http://localhost:3333/orders/all", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setOrders(response.data);
+    } catch (err) {
+      console.error("Erro ao carregar pedidos:", err);
+      alert("Erro ao carregar pedidos.");
+    }
   }
 
   useEffect(() => {
     loadProducts();
     loadOrders();
+    loadUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function handleCreateProduct(e) {
@@ -34,27 +67,63 @@ function Admin() {
     if (!name || !price) return;
 
     try {
-      await axios.post("http://localhost:3333/products", {
-        name,
-        description,
-        price,
-      });
+      const response = await axios.post(
+        "http://localhost:3333/products",
+        {
+          name,
+          description,
+          price,
+          imageUrl,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // adiciona o novo produto na lista
+      setProducts((prev) => [...prev, response.data]);
 
       setName("");
       setDescription("");
       setPrice("");
-      loadProducts();
+      setImageUrl("");
     } catch (err) {
       console.error("Erro ao criar produto:", err);
-      alert("Erro ao criar produto.");
+      const msg = err?.response?.data?.error || "Erro ao criar produto.";
+      alert(msg);
+    }
+  }
+    async function loadOrders() {
+    try {
+      const response = await axios.get("http://localhost:3333/orders/all", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setOrders(response.data);
+    } catch (err) {
+      console.error("Erro ao carregar pedidos:", err);
+      alert("Erro ao carregar pedidos.");
     }
   }
 
+
   async function handleChangeStatus(orderId, newStatus) {
     try {
-      await axios.patch(`http://localhost:3333/orders/${orderId}/status`, {
-        status: newStatus,
-      });
+      await axios.patch(
+        `http://localhost:3333/orders/${orderId}/status`,
+        {
+          status: newStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       loadOrders();
     } catch (err) {
       console.error("Erro ao atualizar status:", err);
@@ -62,10 +131,96 @@ function Admin() {
     }
   }
 
+  async function handleDeleteProduct(id) {
+    const confirmDelete = window.confirm(
+      "Tem certeza que deseja remover este produto?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`http://localhost:3333/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      console.error("Erro ao remover produto:", err);
+
+      const msg = err?.response?.data?.error;
+      if (msg) {
+        alert(msg);
+      } else {
+        alert("Erro ao remover produto.");
+      }
+    }
+  }
+    function handleChangeCreditInput(userId, value) {
+    setCreditValues((prev) => ({
+      ...prev,
+      [userId]: value,
+    }));
+  }
+
+  async function handleAddCredit(userId) {
+    const amountStr = creditValues[userId];
+    const amount = Number(amountStr);
+
+    if (!amountStr || Number.isNaN(amount) || amount <= 0) {
+      alert("Informe um valor válido para crédito.");
+      return;
+    }
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:3333/users/${userId}/credit`,
+        { amount },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // atualiza o user na lista 
+      const updated = response.data;
+
+      setUsers((prev) =>
+        prev.map((u) => (u.id === updated.id ? { ...u, balance: updated.balance } : u))
+      );
+
+      // limpa o campo
+      setCreditValues((prev) => ({
+        ...prev,
+        [userId]: "",
+      }));
+    } catch (err) {
+      console.error("Erro ao adicionar saldo:", err);
+      const msg = err?.response?.data?.error || "Erro ao adicionar saldo.";
+      alert(msg);
+    }
+  }
+  async function loadUsers() {
+  try {
+    const response = await axios.get("http://localhost:3333/users", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setUsers(response.data);
+  } catch (err) {
+    console.error("Erro ao carregar usuários:", err);
+    alert("Erro ao carregar usuários.");
+  }
+}
+
+
+
   return (
     <Container>
       <PageTitle>Painel do Admin</PageTitle>
-
       <Section>
         <SectionTitle>Novo produto</SectionTitle>
 
@@ -85,6 +240,13 @@ function Admin() {
           />
 
           <input
+            type="text"
+            placeholder="URL da imagem (opcional)"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+          />
+
+          <input
             type="number"
             step="0.01"
             placeholder="Preço"
@@ -94,6 +256,84 @@ function Admin() {
 
           <PrimaryButton type="submit">Criar</PrimaryButton>
         </FormRow>
+
+      </Section>
+
+            <Section>
+        <SectionTitle>Usuários e saldo</SectionTitle>
+
+        {users.length === 0 ? (
+          <p>Nenhum usuário encontrado.</p>
+        ) : (
+          <UsersList>
+            {users.map((u) => (
+              <UserRow key={u.id}>
+                <UserInfo>
+                  <strong>{u.name}</strong>
+                  <span>{u.email}</span>
+                  {u.role === "admin" && <RoleBadge>Admin</RoleBadge>}
+                </UserInfo>
+
+                <UserBalance>
+                  Saldo atual:{" "}
+                  <strong>R$ {Number(u.balance || 0).toFixed(2)}</strong>
+                </UserBalance>
+
+                <CreditForm
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleAddCredit(u.id);
+                  }}
+                >
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder="Valor"
+                    value={creditValues[u.id] || ""}
+                    onChange={(e) =>
+                      handleChangeCreditInput(u.id, e.target.value)
+                    }
+                  />
+                  <SmallButton type="submit">Adicionar</SmallButton>
+                </CreditForm>
+              </UserRow>
+            ))}
+          </UsersList>
+        )}
+      </Section>
+
+
+      <Section>
+        <SectionTitle>Produtos cadastrados</SectionTitle>
+
+        {products.length === 0 ? (
+          <p>Nenhum produto cadastrado.</p>
+        ) : (
+          <ProductsList>
+            {products.map((product) => (
+              <ProductRow key={product.id}>
+                <div>
+                  <strong>{product.name}</strong>
+                  {product.description && (
+                    <ProductDescription>
+                      {product.description}
+                    </ProductDescription>
+                  )}
+                  <ProductPrice>
+                    R$ {Number(product.price).toFixed(2)}
+                  </ProductPrice>
+                </div>
+
+                <DeleteButton
+                  type="button"
+                  onClick={() => handleDeleteProduct(product.id)}
+                >
+                  Remover
+                </DeleteButton>
+              </ProductRow>
+            ))}
+          </ProductsList>
+        )}
       </Section>
 
       <Section>
@@ -134,7 +374,9 @@ function Admin() {
                   ))}
                 </ItemsList>
 
-                <TotalLine>Total: R$ {Number(order.total).toFixed(2)}</TotalLine>
+                <TotalLine>
+                  Total: R$ {Number(order.total).toFixed(2)}
+                </TotalLine>
               </OrderCard>
             ))}
           </OrdersList>
@@ -145,7 +387,6 @@ function Admin() {
 }
 
 export default Admin;
-
 
 // -------- estilos -------- //
 
@@ -162,7 +403,7 @@ const SectionTitle = styled.h2`
 
 const FormRow = styled.form`
   display: grid;
-  grid-template-columns: 2fr 3fr 1fr auto;
+  grid-template-columns: 2fr 3fr 3fr 1fr auto;
   gap: 8px;
 
   input {
@@ -177,6 +418,7 @@ const FormRow = styled.form`
   }
 `;
 
+
 const PrimaryButton = styled.button`
   padding: 8px 16px;
   border-radius: 8px;
@@ -187,6 +429,57 @@ const PrimaryButton = styled.button`
 
   &:hover {
     background: ${({ theme }) => theme.colors.softYellow};
+  }
+`;
+
+const ProductsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const ProductRow = styled.div`
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid ${({ theme }) => theme.colors.borderLight};
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const ProductDescription = styled.p`
+  font-size: 13px;
+  color: #555;
+  margin-top: 2px;
+`;
+
+const ProductPrice = styled.p`
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 4px;
+  color: ${({ theme }) => theme.colors.primaryBlue};
+`;
+
+const DeleteButton = styled.button`
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  background: #f56565;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background 0.15s ease, transform 0.1s ease;
+
+  &:hover {
+    background: #e53e3e;
+  }
+
+  &:active {
+    transform: scale(0.96);
   }
 `;
 
@@ -232,4 +525,92 @@ const TotalLine = styled.p`
   font-size: 14px;
   font-weight: 600;
   text-align: right;
+`;
+const UsersList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const UserRow = styled.div`
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid ${({ theme }) => theme.colors.borderLight};
+
+  display: grid;
+  grid-template-columns: 2fr 1.5fr auto;
+  align-items: center;
+  gap: 10px;
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  span {
+    font-size: 13px;
+    color: #555;
+  }
+`;
+
+const RoleBadge = styled.span`
+  margin-top: 4px;
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: ${({ theme }) => theme.colors.primaryBlue};
+  color: #ffff !important;
+  font-size: 11px;
+  font-weight: 600;
+`;
+
+const UserBalance = styled.div`
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.darkBlue};
+
+  strong {
+    font-weight: 600;
+  }
+`;
+
+const CreditForm = styled.form`
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+
+  input {
+    width: 90px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid ${({ theme }) => theme.colors.borderLight};
+    font-size: 13px;
+  }
+`;
+
+const SmallButton = styled.button`
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  background: ${({ theme }) => theme.colors.primaryYellow};
+  color: ${({ theme }) => theme.colors.darkBlue};
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background 0.15s ease, transform 0.1s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.softYellow};
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
 `;

@@ -27,12 +27,13 @@ function Navbar() {
 
 
   <NavRight>
-    {user && (
-      <Balance>
-        Saldo:&nbsp;
-        <strong>R$ {Number(user.balance || 0).toFixed(2)}</strong>
-      </Balance>
-    )}
+      {user && (
+        <Balance>
+          Saldo: <strong>R$ {Number(user.balance || 0).toFixed(2)}</strong>
+        </Balance>
+      )}
+
+
 
     <NavLinks>
       <StyledLink to="/menu">Cardápio</StyledLink>
@@ -181,7 +182,7 @@ const Balance = styled.div`
   strong {
     font-weight: 600;
   }
-  margin-top:2px;
+  margin-top:3px;
 `;
 const CartLink = styled(Link)`
   position: relative;

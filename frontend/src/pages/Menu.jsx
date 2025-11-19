@@ -138,12 +138,14 @@ const Name = styled.h2`
   margin-top: 12px;
   font-size: 18px;
   color: ${({ theme }) => theme.colors.darkBlue};
+  margin-left:2px;
 `;
 
 const Description = styled.p`
   font-size: 14px;
   margin-top: 4px;
   color: #555;
+  margin-left:2px;
 `;
 
 const Price = styled.p`
@@ -151,6 +153,7 @@ const Price = styled.p`
   font-size: 16px;
   color: ${({ theme }) => theme.colors.primaryBlue};
   font-weight: 600;
+  margin-left:2px;
 `;
 
 const AddButton = styled.button`
@@ -198,7 +201,7 @@ const AddButton = styled.button`
 
 const Toast = styled.div`
   position: fixed;
-  top: 120px; 
+  top: 130px; 
   right: 24px;
   background: ${({ theme }) => theme.colors.primaryBlue};
   color: #fff;

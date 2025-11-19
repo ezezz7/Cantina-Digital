@@ -13,7 +13,7 @@ export const GlobalStyle = createGlobalStyle`
   margin: 0;
   padding: 0;
   background: ${({ theme }) => theme.colors.pageBackground};
-  font-family: "Inter", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: ${({ theme }) => theme.colors.textDark};
 }
 
