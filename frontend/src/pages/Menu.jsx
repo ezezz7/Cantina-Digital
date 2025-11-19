@@ -198,7 +198,7 @@ const AddButton = styled.button`
 
 const Toast = styled.div`
   position: fixed;
-  top: 80px; /* logo abaixo da navbar */
+  top: 120px; 
   right: 24px;
   background: ${({ theme }) => theme.colors.primaryBlue};
   color: #fff;

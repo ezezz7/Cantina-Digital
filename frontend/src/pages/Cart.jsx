@@ -155,10 +155,16 @@ const RemoveButton = styled.button`
   border: 1px solid #d32f2f;
   color: #d32f2f;
   font-size: 12px;
+  transition: 
+  transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+  background-color 0.2s ease,
+  box-shadow 0.2s ease,
+  color 0.2s ease;
 
   &:hover {
     background: #d32f2f;
     color: #fff;
+    
   }
 `;
 
@@ -186,6 +192,11 @@ const ClearButton = styled.button`
   border: 1px solid ${({ theme }) => theme.colors.borderLight};
   background: #fff;
   font-weight: 500;
+  transition: 
+  transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+  background-color 0.2s ease,
+  box-shadow 0.2s ease,
+  color 0.2s ease;
 
   &:hover {
     background: #f4f4f4;
@@ -199,6 +210,11 @@ const PrimaryButton = styled.button`
   background: ${({ theme }) => theme.colors.primaryYellow};
   color: ${({ theme }) => theme.colors.darkBlue};
   font-weight: 600;
+  transition: 
+  transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+  background-color 0.2s ease,
+  box-shadow 0.2s ease,
+  color 0.2s ease;
 
   &:hover {
     background: ${({ theme }) => theme.colors.softYellow};

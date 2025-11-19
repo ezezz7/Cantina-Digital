@@ -55,7 +55,8 @@ function Login() {
   }
 
   return (
-    <Container>
+  <Container>
+    <LoginWrapper>
       <PageTitle>Entrar</PageTitle>
 
       <Form onSubmit={handleSubmit}>
@@ -96,8 +97,9 @@ function Login() {
           <LinkStyled to="/register">Criar conta</LinkStyled>
         </HelperText>
       </Form>
-    </Container>
-  );
+    </LoginWrapper>
+  </Container>
+);
 }
 
 export default Login;
@@ -106,8 +108,9 @@ export default Login;
 // ----------- estilos ----------- //
 
 const Form = styled.form`
-  max-width: 380px;
+  max-width: 370px;
   margin-top: 16px;
+  width: 100%;
 `;
 
 const Field = styled.div`
@@ -125,7 +128,7 @@ const Input = styled.input`
   width: 100%;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid
+  border: 0.2px solid
     ${({ theme, $hasError }) =>
       $hasError ? "#d32f2f" : theme.colors.borderLight};
   font-size: 14px;
@@ -188,8 +191,18 @@ const HelperText = styled.p`
 const LinkStyled = styled(Link)`
   color: ${({ theme }) => theme.colors.primaryBlue};
   font-weight: 600;
+  
 
   &:hover {
     color: ${({ theme }) => theme.colors.darkBlue};
   }
+`;
+
+const LoginWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(50vh - 200px);
+  padding: 50px 20px;
 `;

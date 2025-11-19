@@ -1,15 +1,14 @@
 export const theme = {
   colors: {
-    primaryBlue: "#1C4DB3",
-    darkBlue: "#002855",
-    lightBlue: "#4A7BDF",
+    primaryBlue: "#4589B0",
+    darkBlue: "#245670",
 
-    primaryYellow: "#F6C000",
-    softYellow: "#f2dd91ff",
+    primaryYellow: "#F3CC3F",
+    softYellow: "#EAC12B",
 
-    pageBackground: "#F6F8FC",
-    textDark: "#001020",
-    text: "#111111",
-    borderLight: "#D3D3D3",
+    background: "#ecededff",
+    cardBackground: "#FFFFFF",
+    borderLight: "#C9CED4",
   }
 };
+

@@ -18,9 +18,13 @@ function Navbar() {
 
   return (
     <Wrapper>
-      <TopBar />
       <NavContent>
-  <Logo>Cantina Digital</Logo>
+<Logo>
+  <img src="/src/assets/logo-cantina.png" alt="Logo Cantina" style={{ height: "40px" }} />
+  Cantina<br />Digital
+</Logo>
+
+
 
   <NavRight>
     {user && (
@@ -70,9 +74,11 @@ export default Navbar;
 // ----------------- ESTILOS ---------------- //
 
 const Wrapper = styled.header`
-  background: white;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
+  background: ${({ theme }) => theme.colors.primaryBlue};
+  color: white;
+  padding: 14px 0;
 `;
+
 
 const TopBar = styled.div`
   background: ${({ theme }) => theme.colors.darkBlue};
@@ -90,10 +96,21 @@ const NavContent = styled.div`
   justify-content: space-between;
 `;
 
-const Logo = styled.h1`
-  font-size: 22px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.darkBlue};
+const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+`;
+
+const LogoBall = styled.div`
+  width: 32px;
+  height: 32px;
+  background: ${({ theme }) => theme.colors.primaryYellow};
+  border-radius: 50%;
 `;
 
 const NavLinks = styled.div`
@@ -103,44 +120,54 @@ const NavLinks = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  font-size: 16px;
-  font-weight: 550;
-  color: ${({ theme }) => theme.colors.primaryBlue};
+  color: white;
+  font-weight: 500;
+  transition: 
+  transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+  background-color 0.2s ease,
+  box-shadow 0.2s ease,
+  color 0.2s ease;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.darkBlue};
+    color: ${({ theme }) => theme.colors.primaryYellow};
   }
 `;
+
 
 const PrimaryButton = styled(Link)`
   padding: 8px 16px;
   background: ${({ theme }) => theme.colors.primaryYellow};
   color: ${({ theme }) => theme.colors.darkBlue};
+  border-radius: 8px;
   font-weight: 600;
-  border-radius: 6px;
+  transition: 
+  transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+  background-color 0.2s ease,
+  box-shadow 0.2s ease,
+  color 0.2s ease;
 
   &:hover {
     background: ${({ theme }) => theme.colors.softYellow};
   }
 `;
 
+
 const LogoutButton = styled.button`
   padding: 8px 16px;
-  background: transparent;
-  border: 2px solid ${({ theme }) => theme.colors.primaryBlue};
-  border-radius: 6px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.primaryBlue};
+  background: ${({ theme }) => theme.colors.primaryYellow};
+  color: ${({ theme }) => theme.colors.darkBlue};
+  border-radius: 8px;
+  font-weight: 550;
+  transition: 
+  transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+  background-color 0.2s ease,
+  box-shadow 0.2s ease,
+  color 0.2s ease;
+  border:none;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primaryBlue};
-    color: white;
+    background: ${({ theme }) => theme.colors.softYellow};
   }
-    transition: 
-    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-    background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    color 0.2s ease;
 `;
 const NavRight = styled.div`
   display: flex;
@@ -149,17 +176,17 @@ const NavRight = styled.div`
 `;
 
 const Balance = styled.div`
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.darkBlue};
-
+  font-size: 15px;
+  color: ${({ theme }) => theme.colors.primaryWhite};
   strong {
-    font-weight: 700;
+    font-weight: 600;
   }
+  margin-top:2px;
 `;
 const CartLink = styled(Link)`
   position: relative;
-  font-weight: 550;
-  color: ${({ theme }) => theme.colors.primaryBlue};
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.primaryWhite};
   text-decoration: none;
   padding: 8px 12px;
   border-radius: 8px;
@@ -172,7 +199,7 @@ const CartLink = styled(Link)`
   transition: background 0.2s ease;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.darkBlue};
+    color: ${({ theme }) => theme.colors.primaryYellow};
   }
 `;
 
