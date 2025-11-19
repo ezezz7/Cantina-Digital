@@ -13,7 +13,7 @@ function Cart() {
 
   async function handleFinalizeOrder() {
     if (!user) {
-      // se não tiver logado, manda pro login
+      // se não tiver logado, mand pro login
       navigate("/login");
       return;
     }
@@ -30,7 +30,7 @@ function Cart() {
         items: itemsPayload,
       });
 
-      // Pra parte do newBalance
+      // pra parte do newBalance
       const newBalance = response.data?.newBalance;
       if (typeof newBalance !== "undefined") {
         updateUser({ balance: newBalance });
@@ -119,7 +119,7 @@ function Cart() {
 export default Cart;
 
 
-// -------------- Estilos -------------- //
+// ||||||| estilos ||||||| //
 
 const CartTable = styled.table`
   width: 100%;

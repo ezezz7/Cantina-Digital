@@ -5,8 +5,8 @@ const AuthContext = createContext();
 
 // Provider
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);      // dados do usuário
-  const [token, setToken] = useState(null);    // JWT
+  const [user, setUser] = useState(null);      
+  const [token, setToken] = useState(null);   
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  // Função de login
+  // função de login
   async function login(email, password) {
     const response = await axios.post("http://localhost:3333/auth/login", {
       email,
@@ -32,11 +32,11 @@ export function AuthProvider({ children }) {
 
     const { token, user } = response.data;
 
-    // Salvar no estado
+    // salvar no estado
     setToken(token);
     setUser(user);
 
-    // Salvar no localStorage
+    //salvar no localStorage
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
 
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
     return user;
   }
 
-  // Função de logout
+  // function de logout!
   function logout() {
     setToken(null);
     setUser(null);
@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
 
     delete axios.defaults.headers.common["Authorization"];
   }
-  // Função de update user!
+  // function de update user!
   function updateUser(partialUser) {
   setUser((prev) => {
     if (!prev) return prev;
@@ -74,7 +74,7 @@ export function AuthProvider({ children }) {
   );
 }
 
-// Hook bem conveniente
+// hook bem conveniente
 export function useAuth() {
   return useContext(AuthContext);
 }

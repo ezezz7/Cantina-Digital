@@ -13,7 +13,7 @@ function Menu() {
  const [toastVisible, setToastVisible] = useState(false);
  const [toastMessage, setToastMessage] = useState("");
 
-  // Função nova pra parte de adicionar item no carrinho
+  // função nova pra parte de adicionar item no carrinho
   function handleAdd(product) {
     addItem(product);
 
@@ -89,7 +89,7 @@ function Menu() {
 export default Menu;
 
 
-// -------------- Estilos -------------- //
+// |||||||||| estilos |||||||||| //
 
 const Grid = styled.div`
   margin-top: 20px;

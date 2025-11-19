@@ -105,7 +105,7 @@ function Login() {
 export default Login;
 
 
-// ----------- estilos ----------- //
+// ||||||| estilos ||||||| //
 
 const Form = styled.form`
   max-width: 370px;

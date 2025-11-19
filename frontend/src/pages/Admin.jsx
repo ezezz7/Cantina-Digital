@@ -25,7 +25,7 @@ function Admin() {
     return (
       <Container>
         <PageTitle>Painel do Admin</PageTitle>
-        <p>Você não tem permissão para acessar esta página.</p>
+        <p>Você não tem permissão para acessar essa página.</p>
       </Container>
     );
   }
@@ -133,7 +133,7 @@ function Admin() {
 
   async function handleDeleteProduct(id) {
     const confirmDelete = window.confirm(
-      "Tem certeza que deseja remover este produto?"
+      "Tem certeza que quer remover este produto?"
     );
     if (!confirmDelete) return;
 
@@ -183,14 +183,14 @@ function Admin() {
         }
       );
 
-      // atualiza o user na lista 
+      // atualizar o user na lista 
       const updated = response.data;
 
       setUsers((prev) =>
         prev.map((u) => (u.id === updated.id ? { ...u, balance: updated.balance } : u))
       );
 
-      // limpa o campo
+      // limpar o campo
       setCreditValues((prev) => ({
         ...prev,
         [userId]: "",
@@ -388,7 +388,7 @@ function Admin() {
 
 export default Admin;
 
-// -------- estilos -------- //
+// ||||||| estilos ||||||| //
 
 const Section = styled.section`
   margin-top: 20px;

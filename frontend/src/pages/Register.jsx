@@ -117,7 +117,7 @@ function Register() {
             <Input
               id="email"
               type="email"
-              placeholder="seuemail@exemplo.com"
+              placeholder="email@exemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               $hasError={!!errors.email}
@@ -175,7 +175,7 @@ function Register() {
 
 export default Register;
 
-// ----------- estilos ----------- //
+// |||||||| estilos |||||||| //
 
 const RegisterWrapper = styled.div`
   display: flex;

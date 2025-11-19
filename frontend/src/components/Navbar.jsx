@@ -89,7 +89,7 @@ function Navbar() {
 
 export default Navbar;
 
-// ---------- ESTILOS ---------- //
+// |||||| estilos |||||| //
 
 const Wrapper = styled.header`
   background: ${({ theme }) => theme.colors.primaryBlue};
