@@ -18,8 +18,7 @@ Abaixo estão dois exemplos reais da interface da Cantina Digital:
 
 | Tela de Cardápio | Painel Administrativo |
 | :---: | :---: |
-| ![Cardápio](./frontend/public/images/cardapio.png) | ![Painel Admin](./frontend/public/images/admin.png) |
-
+| <img src="./frontend/public/images/cardapio.png" width="450"/> | <img src="./frontend/public/images/admin.png" width="450"/> |
 
 ---
 
