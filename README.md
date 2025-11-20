@@ -13,7 +13,7 @@ O sistema implementa autenticação segura com JWT, controle de acesso por papé
 
 ### 🖥️ Telas da Aplicação: Cardápio vs. Painel Admin
 Abaixo estão dois exemplos reais da interface da Cantina Digital:  
-À esquerda o **Cardápio**, a tela que é o coração da aplicação, e à direita o **Painel Administrativo**, acessível apenas para admins.
+À esquerda o **Cardápio**, tela que é o coração da aplicação, e à direita o **Painel Administrativo**, acessível apenas para admins.
 
 <div align="center">
   <table>
@@ -22,8 +22,8 @@ Abaixo estão dois exemplos reais da interface da Cantina Digital:
       <th>Painel Administrativo</th>
     </tr>
     <tr>
-      <td><img src="./frontend/public/images/cardapio.png" width="400" height="300" /></td>
-      <td><img src="./frontend/public/images/admin.png" width="400" height="300" /></td>
+      <td><img src="./frontend/public/images/cardapio.png" width="400" /></td>
+      <td><img src="./frontend/public/images/admin.png" width="400" /></td>
     </tr>
   </table>
 </div>
