@@ -11,22 +11,6 @@ Ela permite que estudantes e funcionários realizem pedidos online, acompanhem s
 
 O sistema implementa autenticação segura com JWT, controle de acesso por papéis (`user` e `admin`), carrinho de compras, histórico de pedidos e um painel administrativo completo, tudo com uma UI moderna inspirada no design institucional do Grupo Pensar Educação.
 
-### 🖥️ Telas da Aplicação: Cardápio vs. Painel Admin
-Abaixo estão dois exemplos reais da interface da Cantina Digital:  
-À esquerda o **Cardápio**, tela que é o coração da aplicação, e à direita o **Painel Administrativo**, acessível apenas para admins.
-
-<div align="center">
-  <table>
-    <tr>
-      <th>Tela de Cardápio</th>
-      <th>Painel Administrativo</th>
-    </tr>
-    <tr>
-      <td><img src="./frontend/public/images/cardapio.png" width="400" /></td>
-      <td><img src="./frontend/public/images/admin.png" width="400" /></td>
-    </tr>
-  </table>
-</div>
 
 ---
 
