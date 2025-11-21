@@ -20,7 +20,6 @@ app.use('/products', productsRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/users', usersRoutes);
 
-
 // Rota de teste
 app.get('/health', (req, res) => {
   return res.json({
@@ -29,9 +28,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-
 // |||||||| ROTAS DE AUTENTICAÇÃO |||||||| //
-
 
 // POST /auth/register
 // cadastro
@@ -45,6 +42,7 @@ app.post('/auth/register', async (req, res) => {
         error: 'Nome, email e senha são obrigatórios',
       });
     }
+
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -59,7 +57,7 @@ app.post('/auth/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 20 reais iniciais só por praticidade
-    const INITIAL_BALANCE = 20; 
+    const INITIAL_BALANCE = 20;
     const user = await prisma.user.create({
       data: {
         name,
@@ -68,7 +66,7 @@ app.post('/auth/register', async (req, res) => {
         studentId: studentId || null,
         balance: INITIAL_BALANCE,
       },
-});
+    });
 
     // nunca devolvendo senha nem hash
     return res.status(201).json({
@@ -90,14 +88,14 @@ app.post('/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // só uma validação básica 
+    // só uma validação básica
     if (!email || !password) {
       return res.status(400).json({
         error: 'Email e senha são obrigatórios',
       });
     }
 
-    // procurando  o usuário pelo email
+    // procurando o usuário pelo email
     const user = await prisma.user.findUnique({
       where: { email },
     });
@@ -117,7 +115,7 @@ app.post('/auth/login', async (req, res) => {
       });
     }
 
-    // gerando o token 
+    // gerando o token
     const token = jwt.sign(
       {
         userId: user.id,
@@ -146,9 +144,7 @@ app.post('/auth/login', async (req, res) => {
   }
 });
 
-
 // |||||||||  ROTA PROTEGIDA DE TESTE ||||||||| //
-
 
 // GET /me
 app.get('/me', authMiddleware, async (req, res) => {
@@ -179,72 +175,10 @@ app.get('/me', authMiddleware, async (req, res) => {
   }
 });
 
-//  ||||||||| GARANTIR QUE EXISTA UM ADMIN ||||||||| //
-
-async function ensureAdminUser() {
-  try {
-    // já existe admin?
-    const admin = await prisma.user.findFirst({
-      where: { role: "admin" },
-    });
-
-    if (admin) {
-      console.log("Admin já existe:", admin.email);
-      return;
-    }
-
-    // pega o primeiro usuário criado e promove
-    const firstUser = await prisma.user.findFirst({
-      orderBy: { id: "asc" },
-    });
-
-    if (firstUser) {
-      await prisma.user.update({
-        where: { id: firstUser.id },
-        data: { role: "admin" },
-      });
-
-      console.log(`Usuário ${firstUser.email} promovido automaticamente a admin.`);
-      return;
-    }
-
-    // se não tem nenhum usuário, tenta criar adm a partir das envs
-    const defaultEmail = process.env.INIT_ADMIN_EMAIL;
-    const defaultPassword = process.env.INIT_ADMIN_PASSWORD;
-
-    if (!defaultEmail || !defaultPassword) {
-      console.log(
-        "INIT_ADMIN_EMAIL/INIT_ADMIN_PASSWORD não definidas. Nenhum admin criado automaticamente."
-      );
-      return;
-    }
-
-    const hashed = await bcrypt.hash(defaultPassword, 10);
-
-    const newAdmin = await prisma.user.create({
-      data: {
-        name: "Admin",
-        email: defaultEmail,
-        password: hashed,
-        role: "admin",
-        balance: 0,
-      },
-    });
-
-    console.log(`Admin criado automaticamente: ${newAdmin.email}`);
-  } catch (err) {
-    console.error("Erro ao garantir admin:", err);
-  }
-}
-
-
-//   ||||||||| PARTE PRA INICIAR SERVIDOR |||||||||||  // 
+//   ||||||||| PARTE PRA INICIAR SERVIDOR |||||||||||  //
 
 const PORT = process.env.PORT || 3333;
 
-// chama a função que garante que exista um admin
-ensureAdminUser().finally(() => {
-  app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-  });
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
