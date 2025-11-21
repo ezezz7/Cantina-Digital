@@ -1,12 +1,11 @@
 import styled from "styled-components";
+import logoPensar from "../assets/grupo-pensar-logo.png";
 
 export default function Footer() {
   return (
     <Wrapper>
       <Container>
-        <LogoPensar
-          src="src/assets/grupo-pensar-logo.png"
-        />
+       <LogoPensar src={logoPensar} />
         <DevText> Desenvolvido por José Vítor</DevText>
       </Container>
     </Wrapper>

@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useCart } from "../contexts/CartContext";
 import { User, Settings, Menu, X } from "lucide-react";
 import { useState } from "react";
+import logoCantina from "../assets/logo-cantina.png";
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -22,9 +23,10 @@ function Navbar() {
     <Wrapper>
       <NavContent>
         <Logo>
-          <img src="/src/assets/logo-cantina.png" alt="Logo Cantina" style={{ height: "40px" }} />
+          <img src={logoCantina} alt="Logo Cantina" style={{ height: "40px" }} />
           <LogoText>Cantina<br />Digital</LogoText>
         </Logo>
+
 
         <NavRight>
           {user && (
