@@ -179,12 +179,51 @@ app.get('/me', authMiddleware, async (req, res) => {
   }
 });
 
+//  ||||||||| GARANTIR QUE EXISTA UM ADMIN ||||||||| //
+
+async function ensureAdminUser() {
+  try {
+    // já existe admin?
+    const admin = await prisma.user.findFirst({
+      where: { role: "admin" },
+    });
+
+    if (admin) {
+      console.log("Admin já existe:", admin.email);
+      return;
+    }
+
+    // pega o primeiro usuário criado
+    const firstUser = await prisma.user.findFirst({
+      orderBy: { id: "asc" },
+    });
+
+    if (!firstUser) {
+      console.log("Nenhum usuário encontrado para promover a admin.");
+      return;
+    }
+
+    await prisma.user.update({
+      where: { id: firstUser.id },
+      data: { role: "admin" },
+    });
+
+    console.log(`Usuário ${firstUser.email} promovido automaticamente a admin.`);
+  } catch (err) {
+    console.error("Erro ao garantir admin:", err);
+  }
+}
+
+
 
 
 //   ||||||||| PARTE PRA INICIAR SERVIDOR |||||||||||  // 
 
 const PORT = process.env.PORT || 3333;
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+// chama a função que garante que exista um admin
+ensureAdminUser().finally(() => {
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
 });
