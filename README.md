@@ -297,8 +297,8 @@ Com o Swagger, é possível:
 
 * Auth
 * Users
+* Orders
 * Products
-* 
 ### 🔹 Prisma para segurança e integridade do BD:
 
 * Relações fortes
