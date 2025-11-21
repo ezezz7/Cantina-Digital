@@ -267,6 +267,22 @@ No backend, rotas admin-only exigem middleware especializado.
 | PATCH  | /orders/:id/status | Admin atualiza status |
 
 ---
+# 🌐 Deploy para Testes
+
+A aplicação está publicada e pronta para uso:
+
+- **Frontend (Vercel)**: [cantina-digital-five.vercel.app](https://cantina-digital-five.vercel.app)
+- **Backend (Render)**: [cantina-digital-backend.onrender.com](https://cantina-digital-backend.onrender.com/health) _(rota de health check)_
+---
+
+### 🔐 Credenciais de Admin para Testes
+
+Para facilitar a avaliação, o sistema cria (em ambiente de demo) um administrador padrão:
+
+```txt
+email: admin@cantina.com
+senha: admin123 
+```
 
 # 🏛️ Arquitetura
 
