@@ -183,6 +183,7 @@ app.get('/me', authMiddleware, async (req, res) => {
 
 async function ensureAdminUser() {
   try {
+    // já existe admin?
     const admin = await prisma.user.findFirst({
       where: { role: "admin" },
     });
@@ -192,7 +193,7 @@ async function ensureAdminUser() {
       return;
     }
 
-    // pega o primeiro usuário criado
+    // pega o primeiro usuário criado e promove
     const firstUser = await prisma.user.findFirst({
       orderBy: { id: "asc" },
     });
@@ -207,9 +208,16 @@ async function ensureAdminUser() {
       return;
     }
 
-    // se não tem nenhum usuário, cria um adm padrão
-    const defaultEmail = process.env.INIT_ADMIN_EMAIL || "admin@cantina.com";
-    const defaultPassword = process.env.INIT_ADMIN_PASSWORD || "admin123";
+    // se não tem nenhum usuário, tenta criar adm a partir das envs
+    const defaultEmail = process.env.INIT_ADMIN_EMAIL;
+    const defaultPassword = process.env.INIT_ADMIN_PASSWORD;
+
+    if (!defaultEmail || !defaultPassword) {
+      console.log(
+        "INIT_ADMIN_EMAIL/INIT_ADMIN_PASSWORD não definidas. Nenhum admin criado automaticamente."
+      );
+      return;
+    }
 
     const hashed = await bcrypt.hash(defaultPassword, 10);
 
@@ -223,14 +231,11 @@ async function ensureAdminUser() {
       },
     });
 
-    console.log(
-      `Admin criado automaticamente: ${newAdmin.email}. Senha padrão usada.`
-    );
+    console.log(`Admin criado automaticamente: ${newAdmin.email}`);
   } catch (err) {
     console.error("Erro ao garantir admin:", err);
   }
 }
-
 
 
 //   ||||||||| PARTE PRA INICIAR SERVIDOR |||||||||||  // 
