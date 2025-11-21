@@ -272,6 +272,25 @@ Authorization: Bearer <token>
 
 ---
 
+---
+
+# 📚 Documentação da API (Swagger)
+
+A API conta com documentação interativa gerada com **Swagger UI**.
+
+Após iniciar o backend, acesse:
+
+**http://localhost:3333/docs**
+
+Com o Swagger, é possível:
+
+- Visualizar e testar as **principais rotas** (auth, listagem de produtos e criação/listagem de pedidos)
+- Enviar requisições autenticadas via JWT pelo botão **Authorize**
+- Ver schemas, parâmetros e respostas dos endpoints documentados
+
+---
+
+
 # 🏛️ Arquitetura
 
 ### 🔹 Separação clara de responsabilidades:
