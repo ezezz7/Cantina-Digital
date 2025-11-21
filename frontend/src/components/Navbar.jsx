@@ -28,8 +28,8 @@ function Navbar() {
         </Logo>
 
 
-        <NavRight>
-          {user && user.role !== "admin" && (
+           <NavRight>
+          {user && (
             <Balance>
               Saldo: <strong>R$ {Number(user.balance || 0).toFixed(2)}</strong>
             </Balance>
