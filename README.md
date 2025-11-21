@@ -136,7 +136,8 @@ Cantina-Digital/
 │   │   └── seed.js
 │   ├── routes/
 │   ├── middlewares/
-│   ├── src/server.js
+│   ├── src/
+│       └── server.js
 │   └── package.json
 │
 └── frontend/
@@ -152,16 +153,35 @@ Cantina-Digital/
 
 ---
 
-# ⚙️ Configuração do Backend
+# ⚙️ Como rodar o projeto
 
-## 1. Instale as dependências
+Antes de começar, certifique-se de ter instalado:
+
+* **Node.js (v18 ou superior)**
+* **npm ou yarn**
+* Nenhuma dependência externa é necessária (o banco é **SQLite**, já integrado)
+
+---
+
+## 📥 1. Clone o Repositório
+
+```bash
+git clone https://github.com/ezezz7/Cantina-Digital.git
+cd Cantina-Digital
+```
+
+---
+
+## 📦 2. Configure o Back-end 
+
+### Instale as dependências
 
 ```bash
 cd backend
 npm install
 ```
 
-## 2. Crie o arquivo `.env`
+### Crie o arquivo `.env`
 
 ```
 JWT_SECRET="coloque-sua-chave-aqui"
@@ -174,19 +194,19 @@ DATABASE_URL="file:./dev.db"
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-## 3. Rode as migrations
+### Rode as migrations
 
 ```bash
 npx prisma migrate dev
 ```
 
-## 4. Popule o banco (admin + produtos)
+### Popule o banco (admin + produtos)
 
 ```bash
 npx prisma db seed
 ```
 
-## 5. Inicie o servidor
+### Inicie o servidor
 
 ```bash
 npm start
@@ -197,22 +217,22 @@ A API ficará disponível em:
 
 ---
 
-# 💻 Configuração do Frontend
+## 💻 3. Configure o Front-end
 
-## 1. Instale as dependências
+### Instale as dependências
 
 ```bash
 cd frontend
 npm install
 ```
 
-## 2. Crie o arquivo `.env`
+### Crie o arquivo `.env`
 
 ```
 VITE_API_URL=http://localhost:3333
 ```
 
-## 3. Inicie o servidor
+### Inicie o servidor
 
 ```bash
 npm run dev
@@ -328,4 +348,10 @@ Com o Swagger, é possível:
 **José Vítor - Desenvolvedor**
 
 ---
+
+
+
+
+
+
 
