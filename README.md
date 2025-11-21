@@ -256,7 +256,7 @@ Para facilitar a avaliação, abaixo está o fluxo completo de uso da Cantina Di
 ### 1️⃣ **Acesso inicial**
 
 * Abra o front-end em `http://localhost:5173`.
-* Caso ainda não tenha conta, clique em **Registrar**.
+* Caso ainda não tenha conta, clique em **Criar conta**.
 
 ### 2️⃣ **Login**
 
