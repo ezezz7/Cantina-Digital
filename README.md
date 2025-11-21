@@ -11,14 +11,15 @@ Ela permite que estudantes e funcionários realizem pedidos online, acompanhem s
 
 O sistema implementa autenticação segura com JWT, controle de acesso por papéis (`user` e `admin`), carrinho de compras, histórico de pedidos e um painel administrativo completo, tudo com uma UI moderna inspirada no design institucional do Grupo Pensar Educação.
 
-### 🖥️ Telas da Aplicação: Cardápio vs. Painel Admin
+### 🖥️ Exemplos de Telas
+
 Abaixo estão dois exemplos reais da interface da Cantina Digital:  
 À esquerda o **Cardápio**, tela que é o coração da aplicação, e à direita o **Painel Administrativo**, acessível apenas para admins.
 
 <div align="center">
   <table>
     <tr>
-      <th>Tela de Cardápio</th>
+      <th>Cardápio</th>
       <th>Painel Administrativo</th>
     </tr>
     <tr>
@@ -35,16 +36,16 @@ Abaixo estão dois exemplos reais da interface da Cantina Digital:
 ## 👤 Autenticação & Segurança
 
 * Registro de usuários com senha hasheada via **bcryptjs**
-* Login com **JWT (JSON Web Token)**
+* Login seguro via JWT
 * Middleware global de autenticação
-* Rota protegida para pedidos
-* Controle de permissão baseado em papel (User/Admin)
-* Armazenamento seguro do token
+* Controle de permissões (User/Admin)
+* Token armazenado no browser com segurança
+* Rotas protegidas para pedidos e área administrativa
 
 ## 🛒 Cardápio e Carrinho
 
-* Listagem completa dos produtos
-* Cards modernos com preço, descrição e imagem
+* Listagem de produtos
+* Cards modernos com imagem, descrição e preço
 * Carrinho persistente via Context API
 * Toast visual ao adicionar item
 * Revisão do pedido antes da finalização
@@ -54,13 +55,12 @@ Abaixo estão dois exemplos reais da interface da Cantina Digital:
 * Todo usuário começa com **R$ 20,00** de saldo inicial para praticidade nos testes
 * Saldo é debitado automaticamente ao finalizar pedido
 * Admin pode adicionar saldo a qualquer usuário via painel administrativo exclusivo
-* Visualização de saldo em tempo real na navbar para fácil informação
-  
+* Saldo exibido em tempo real na navbar
+
 ## 📦 Pedidos
 
-* Criação de pedidos com base no carrinho
-* Total calculado automaticamente no backend
-* Histórico pessoal do usuário
+* Criação de pedidos com cálculo de total com base no carrinho
+* Histórico pessoal completo
 * Status do pedido:
 
   * `PENDING`
@@ -70,7 +70,7 @@ Abaixo estão dois exemplos reais da interface da Cantina Digital:
 
 ## 🛠 Painel Administrativo (Admin)
 
-Admin pode:
+Admins podem:
 
 * Criar produtos (com nome, descrição, preço e URL de imagem)
 * Remover produtos (com proteção se estiver em pedidos)
@@ -79,9 +79,11 @@ Admin pode:
 * Gerenciar usuários
 * Adicionar saldo individualmente
 
-### 🔐 Como acessar o Admin?
+---
 
-O sistema já cria um administrador padrão no primeiro seed.
+# 🔐 Admin Padrão (Seed)
+
+Ao rodar o seed, o sistema cria automaticamente um usuário administrador e **4 produtos iniciais** para facilitar os testes.
 
 **Admin padrão:**
 
@@ -89,6 +91,13 @@ O sistema já cria um administrador padrão no primeiro seed.
 email: admin@cantina.com
 senha: admin123
 ```
+
+**Produtos criados automaticamente:**
+
+* Café
+* Coxinha
+* Sanduíche
+* Suco de Laranja
 
 ---
 
@@ -123,10 +132,11 @@ Cantina-Digital/
 │
 ├── backend/
 │   ├── prisma/
-│   │   └── schema.prisma
+│   │   ├── schema.prisma
+│   │   └── seed.js
 │   ├── routes/
 │   ├── middlewares/
-│   ├── server.js
+│   ├── src/server.js
 │   └── package.json
 │
 └── frontend/
@@ -158,24 +168,31 @@ JWT_SECRET="coloque-sua-chave-aqui"
 DATABASE_URL="file:./dev.db"
 ```
 
-**Por segurança:** Para gerar uma chave JWT segura, execute:
+> Para gerar uma chave segura:
+
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-## 3. Migrate
+## 3. Rode as migrations
 
 ```bash
 npx prisma migrate dev
 ```
 
-## 4. Execute o servidor
+## 4. Popule o banco (admin + produtos)
+
+```bash
+npx prisma db seed
+```
+
+## 5. Inicie o servidor
 
 ```bash
 npm start
 ```
 
-A API ficará em:
+A API ficará disponível em:
 **[http://localhost:3333](http://localhost:3333)**
 
 ---
@@ -189,47 +206,34 @@ cd frontend
 npm install
 ```
 
-## 2. Crie o `.env`
+## 2. Crie o arquivo `.env`
 
 ```
 VITE_API_URL=http://localhost:3333
 ```
 
-## 3. Rode o projeto
+## 3. Inicie o servidor
 
 ```bash
 npm run dev
 ```
 
 Frontend disponível em:
-[http://localhost:5173](http://localhost:5173)
+**[http://localhost:5173](http://localhost:5173)**
 
 ---
 
-# 🔒 Autenticação e Fluxo de Segurança
+# 🔒 Fluxo de Autenticação
 
-A aplicação segue boas práticas modernas:
-
-### ✔ Senhas hasheadas
-
-Usa **bcryptjs**
-
-### ✔ JWT stateless
-
-Toda rota protegida exige header:
+* Senhas hasheadas (bcryptjs)
+* JWT enviado no header:
 
 ```
 Authorization: Bearer <token>
 ```
 
-### ✔ O front-end só acessa dados do usuário autenticado
-
-* `/orders` sempre retorna **somente pedidos do próprio usuário**
-
-### ✔ Admin tem privilégios extra
-
-Cartões de UI só aparecem se `role === "admin"`
-No backend, rotas admin-only exigem middleware especializado.
+* `/orders` retorna **apenas pedidos do usuário logado**
+* Middlewares garantem acesso exclusivo a admins nas rotas críticas
 
 ---
 
@@ -237,10 +241,10 @@ No backend, rotas admin-only exigem middleware especializado.
 
 ## Auth
 
-| Método | Rota           | Descrição           |
-| ------ | -------------- | ------------------- |
-| POST   | /auth/register | Registrar usuário   |
-| POST   | /auth/login    | Login + retorna JWT |
+| Método | Rota           | Descrição         |
+| ------ | -------------- | ----------------- |
+| POST   | /auth/register | Registrar usuário |
+| POST   | /auth/login    | Login + JWT       |
 
 ## Usuários
 
@@ -267,22 +271,6 @@ No backend, rotas admin-only exigem middleware especializado.
 | PATCH  | /orders/:id/status | Admin atualiza status |
 
 ---
-# 🌐 Deploy para Testes
-
-A aplicação está publicada e pronta para uso:
-
-- **Frontend (Vercel)**: [cantina-digital-five.vercel.app](https://cantina-digital-five.vercel.app)
-- **Backend (Render)**: [cantina-digital-backend.onrender.com](https://cantina-digital-backend.onrender.com/health) _(rota de health check)_
----
-
-### 🔐 Credenciais de Admin para Testes
-
-Para facilitar a avaliação, o sistema cria (em ambiente de demo) um administrador padrão:
-
-```txt
-email: admin@cantina.com
-senha: admin123 
-```
 
 # 🏛️ Arquitetura
 
@@ -290,9 +278,8 @@ senha: admin123
 
 * Auth
 * Users
-* Orders
 * Products
-
+* 
 ### 🔹 Prisma para segurança e integridade do BD:
 
 * Relações fortes
@@ -317,11 +304,9 @@ senha: admin123
 
 ---
 
-# 👨‍💻 Autor
+# 🪶 Autor
 
-**José Vítor**
+**José Vítor - Desenvolvedor**
 
 ---
-
-
 
