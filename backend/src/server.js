@@ -183,10 +183,8 @@ app.get('/me', authMiddleware, async (req, res) => {
 
 //   ||||||||| PARTE PRA INICIAR SERVIDOR |||||||||||  // 
 
-
-const PORT = 3333;
+const PORT = process.env.PORT || 3333;
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
-
