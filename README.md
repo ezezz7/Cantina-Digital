@@ -181,7 +181,7 @@ cd backend
 npm install
 ```
 
-### Crie o arquivo `.env`
+### Crie o arquivo `.env` na raiz
 
 ```
 JWT_SECRET="coloque-sua-chave-aqui"
@@ -206,6 +206,12 @@ npx prisma migrate dev
 npx prisma db seed
 ```
 
+Executando o seed, serão criados:
+* 4 Produtos (Café, Coxinha, Sanduíche, Suco de Laranja)
+* Um admin com as credenciais:
+-> **E-mail**: `admin@cantina.com`
+-> **Senha**: `admin123`
+
 ### Inicie o servidor
 
 ```bash
@@ -226,7 +232,7 @@ cd frontend
 npm install
 ```
 
-### Crie o arquivo `.env`
+### Crie o arquivo `.env` na raiz
 
 ```
 VITE_API_URL=http://localhost:3333
@@ -240,6 +246,55 @@ npm run dev
 
 Frontend disponível em:
 **[http://localhost:5173](http://localhost:5173)**
+
+---
+
+# 🔄 Fluxo de Uso da Aplicação
+
+Para facilitar a avaliação, abaixo está o fluxo completo de uso da Cantina Digital:
+
+### 1️⃣ **Acesso inicial**
+
+* Abra o front-end em `http://localhost:5173`.
+* Caso ainda não tenha conta, clique em **Registrar**.
+
+### 2️⃣ **Login**
+
+* Entre com seu e-mail e senha.
+* Ou utilize o **admin padrão** criado pelo seed:
+
+```
+email: admin@cantina.com
+senha: admin123
+```
+
+### 3️⃣ **Explorar o cardápio**
+
+* A página principal exibe todos os produtos.
+* Clique em **Adicionar ao Carrinho** para incluir itens.
+
+### 4️⃣ **Carrinho e Finalização**
+
+* Acesse o carrinho pelo ícone no topo.
+* Reveja os itens e finalize o pedido.
+* O backend descontará automaticamente o saldo do usuário.
+
+### 5️⃣ **Histórico de Pedidos**
+
+* Acesse **Meus Pedidos** para ver todos os pedidos feitos.
+* Cada pedido exibe:
+
+  * Itens comprados
+  * Total
+  * Status atual (`PENDING`, `PREPARING`, `READY`)
+
+### 6️⃣ **Área Administrativa (somente admin)**
+
+Ao logar como admin, você terá acesso a:
+
+* **Gerenciar Produtos:** criar, editar e remover produtos
+* **Gerenciar Pedidos:** ver todos os pedidos e atualizar o status
+* **Gerenciar Usuários:** adicionar saldo aos usuários
 
 ---
 
@@ -343,6 +398,24 @@ Com o Swagger, é possível:
 # 🪶 Autor
 
 **José Vítor - Desenvolvedor**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
