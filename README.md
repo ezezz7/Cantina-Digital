@@ -292,8 +292,6 @@ Authorization: Bearer <token>
 
 ---
 
----
-
 # 📚 Documentação da API (Swagger)
 
 A API conta com documentação interativa gerada com **Swagger UI**.
@@ -309,7 +307,6 @@ Com o Swagger, é possível:
 - Ver schemas, parâmetros e respostas dos endpoints documentados
 
 ---
-
 
 # 🏛️ Arquitetura
 
@@ -347,7 +344,6 @@ Com o Swagger, é possível:
 
 **José Vítor - Desenvolvedor**
 
----
 
 
 
