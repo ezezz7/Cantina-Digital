@@ -183,7 +183,6 @@ app.get('/me', authMiddleware, async (req, res) => {
 
 async function ensureAdminUser() {
   try {
-    // já existe admin?
     const admin = await prisma.user.findFirst({
       where: { role: "admin" },
     });
@@ -198,22 +197,39 @@ async function ensureAdminUser() {
       orderBy: { id: "asc" },
     });
 
-    if (!firstUser) {
-      console.log("Nenhum usuário encontrado para promover a admin.");
+    if (firstUser) {
+      await prisma.user.update({
+        where: { id: firstUser.id },
+        data: { role: "admin" },
+      });
+
+      console.log(`Usuário ${firstUser.email} promovido automaticamente a admin.`);
       return;
     }
 
-    await prisma.user.update({
-      where: { id: firstUser.id },
-      data: { role: "admin" },
+    // se não tem nenhum usuário, cria um adm padrão
+    const defaultEmail = process.env.INIT_ADMIN_EMAIL || "admin@cantina.com";
+    const defaultPassword = process.env.INIT_ADMIN_PASSWORD || "admin123";
+
+    const hashed = await bcrypt.hash(defaultPassword, 10);
+
+    const newAdmin = await prisma.user.create({
+      data: {
+        name: "Admin",
+        email: defaultEmail,
+        password: hashed,
+        role: "admin",
+        balance: 0,
+      },
     });
 
-    console.log(`Usuário ${firstUser.email} promovido automaticamente a admin.`);
+    console.log(
+      `Admin criado automaticamente: ${newAdmin.email}. Senha padrão usada.`
+    );
   } catch (err) {
     console.error("Erro ao garantir admin:", err);
   }
 }
-
 
 
 
