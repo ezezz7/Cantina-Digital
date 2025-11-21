@@ -5,16 +5,25 @@ import Container from "../components/Container";
 import PageTitle from "../components/PageTitle";
 import { useCart } from "../contexts/CartContext";
 import { useAuth } from "../contexts/AuthContext";
+import { useState } from "react"; 
 
 function Cart() {
   const { cartItems, updateQuantity, removeItem, clearCart, cartTotal } = useCart();
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   async function handleFinalizeOrder() {
     if (!user) {
-      // se não tiver logado, mand pro login
-      navigate("/login");
+      setToastMessage("Você precisa estar logado para fazer um pedido!");
+      setToastVisible(true);
+
+      setTimeout(() => {
+        setToastVisible(false);
+        navigate("/login");
+      }, 1500);
+
       return;
     }
 
@@ -25,12 +34,10 @@ function Cart() {
         productId: item.id,
         quantity: item.quantity,
       }));
-
-      const response = await axios.post("http://localhost:3333/orders", {
+      const response = await axios.post("/orders", {
         items: itemsPayload,
       });
 
-      // pra parte do newBalance
       const newBalance = response.data?.newBalance;
       if (typeof newBalance !== "undefined") {
         updateUser({ balance: newBalance });
@@ -39,7 +46,7 @@ function Cart() {
       clearCart();
       navigate("/meus-pedidos");
 
-   } catch (err) {
+    } catch (err) {
       console.error("Erro ao finalizar pedido:", err);
 
       const msg = err?.response?.data?.error;
@@ -50,12 +57,12 @@ function Cart() {
         alert("Erro ao finalizar pedido. Tente novamente.");
       }
     }
-
   }
 
   return (
     <Container>
       <PageTitle>Carrinho</PageTitle>
+      {toastVisible && <Toast>{toastMessage}</Toast>}
 
       {cartItems.length === 0 ? (
         <p>Seu carrinho está vazio.</p>
@@ -164,7 +171,6 @@ const RemoveButton = styled.button`
   &:hover {
     background: #d32f2f;
     color: #fff;
-    
   }
 `;
 
@@ -218,5 +224,40 @@ const PrimaryButton = styled.button`
 
   &:hover {
     background: ${({ theme }) => theme.colors.softYellow};
+  }
+`;
+
+const Toast = styled.div`
+  position: fixed;
+  top: 130px;
+  right: 24px;
+  background: ${({ theme }) => theme.colors.primaryBlue};
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+
+  animation: fadeInOut 1.5s ease forwards;
+
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    15% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    85% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
   }
 `;
