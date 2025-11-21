@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
 
   // função de login
   async function login(email, password) {
-    const response = await axios.post("http://localhost:3333/auth/login", {
+    const response = await axios.post("/auth/login", {
       email,
       password,
     });

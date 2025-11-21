@@ -12,7 +12,7 @@ function Orders() {
   useEffect(() => {
     async function loadOrders() {
       try {
-        const response = await axios.get("http://localhost:3333/orders");
+        const response = await axios.get("/orders");
         setOrders(response.data);
       } catch (err) {
         console.error("Erro ao carregar pedidos:", err);

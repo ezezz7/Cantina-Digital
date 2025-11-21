@@ -58,7 +58,7 @@ function Register() {
     try {
       setLoading(true);
 
-      await axios.post("http://localhost:3333/auth/register", {
+      await axios.post("/auth/register", {
         name,
         email,
         password,

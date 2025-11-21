@@ -32,7 +32,7 @@ function Admin() {
 
   async function loadProducts() {
     try {
-      const response = await axios.get("http://localhost:3333/products");
+      const response = await axios.get("/products");
       setProducts(response.data);
     } catch (err) {
       console.error("Erro ao carregar produtos:", err);
@@ -42,7 +42,7 @@ function Admin() {
 
   async function loadOrders() {
     try {
-      const response = await axios.get("http://localhost:3333/orders/all", {
+      const response = await axios.get("/orders/all", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,7 +68,7 @@ function Admin() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3333/products",
+        "/products",
         {
           name,
           description,
@@ -97,7 +97,7 @@ function Admin() {
   }
     async function loadOrders() {
     try {
-      const response = await axios.get("http://localhost:3333/orders/all", {
+      const response = await axios.get("/orders/all", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -113,7 +113,7 @@ function Admin() {
   async function handleChangeStatus(orderId, newStatus) {
     try {
       await axios.patch(
-        `http://localhost:3333/orders/${orderId}/status`,
+        `/orders/${orderId}/status`,
         {
           status: newStatus,
         },
@@ -138,7 +138,7 @@ function Admin() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:3333/products/${id}`, {
+      await axios.delete(`/products/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -174,7 +174,7 @@ function Admin() {
 
     try {
       const response = await axios.patch(
-        `http://localhost:3333/users/${userId}/credit`,
+        `/users/${userId}/credit`,
         { amount },
         {
           headers: {
@@ -203,7 +203,7 @@ function Admin() {
   }
   async function loadUsers() {
   try {
-    const response = await axios.get("http://localhost:3333/users", {
+    const response = await axios.get("/users", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

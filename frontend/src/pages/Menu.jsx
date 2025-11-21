@@ -30,7 +30,7 @@ function Menu() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const response = await axios.get("http://localhost:3333/products");
+        const response = await axios.get("/products");
         setProducts(response.data);
       } catch (err) {
         console.error("Erro ao carregar produtos:", err);
@@ -47,6 +47,14 @@ function Menu() {
       <Container>
         <PageTitle>Cardápio</PageTitle>
         <p>Carregando produtos...</p>
+      </Container>
+    );
+  }
+  if (products.length === 0) {
+    return (
+      <Container>
+        <PageTitle>Cardápio</PageTitle>
+        <p>Nenhum produto cadastrado no cardápio.</p>
       </Container>
     );
   }
